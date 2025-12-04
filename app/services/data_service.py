@@ -1,3 +1,5 @@
+import logging
+
 from app.databases.db import get_postgresql_db_contextmanager
 from app.databases.repository import CountryRepository
 from app.utils.html_manager import HtmlManager
@@ -31,13 +33,21 @@ class DataService:
             repo = CountryRepository(session)
 
             if not await repo.verify_db():
-                print("No data to print. Please use `docker-compose up get_data` first")
+                logging.warning("No data to print. Please use `docker-compose up get_data` first")
+                return
 
             countries = await repo.get_countries()
+
             for country in countries:
-                print(f"Region: {country['region']}")
-                print(f"Total population: {country['total_population']}")
-                print(f"Largest country in the region (population): {country['largest_country']}")
-                print(f"Largest population in there: {country['largest_population']}")
-                print(f"Smallest country in the region (population): {country['smallest_country']}")
-                print(f"Smallest population in there: {country['smallest_population']}\n")
+                logging.info(f"Region: {country['region']}")
+                logging.info(f"Total population: {country['total_population']}")
+                logging.info(
+                    f"Largest country in the region (population): "
+                    f"{country['largest_country']}"
+                )
+                logging.info(f"Largest population in there: {country['largest_population']}")
+                logging.info(
+                    f"Smallest country in the region (population): "
+                    f"{country['smallest_country']}"
+                )
+                logging.info(f"Smallest population in there: {country['smallest_population']}\n")

@@ -12,5 +12,4 @@ class ParserFactory:
             return WikipediaParser(soup)
         elif "statisticstimes" in source_url.lower():
             return StatisticsTimesParser(soup)
-        else:
-            raise ValueError(f"No parser implemented for source: {source_url}")
+        raise ValueError(f"No parser implemented for source: {source_url}")
