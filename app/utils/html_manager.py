@@ -20,7 +20,7 @@ class HtmlManager:
         return False
 
     async def fetch_html(self, url: str) -> BeautifulSoup:
-        async with AsyncClient() as client:
+        async with AsyncClient(timeout=20.0) as client:
             resp = await client.get(url, headers=self.headers)
             return BeautifulSoup(resp.content, "html.parser")
 

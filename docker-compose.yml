@@ -5,6 +5,7 @@ services:
       dockerfile: ../countries-population-service/Dockerfile
     command: >
       sh -c "
+        cp .env.example .env &&
         alembic upgrade head &&
         python -m app.main get_data
       "
@@ -16,7 +17,11 @@ services:
     build:
       context: .
       dockerfile: ../countries-population-service/Dockerfile
-    command: python -m app.main print_data
+    command: >
+      sh -c "
+        cp .env.example .env &&
+        python -m app.main print_data
+      "
     depends_on:
       db:
         condition: service_healthy
@@ -25,7 +30,7 @@ services:
     image: 'postgres:latest'
     container_name: db
     env_file:
-      - .env
+      - .env.example
     ports:
       - "5432:5432"
     volumes:
